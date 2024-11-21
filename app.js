@@ -5,6 +5,10 @@ const currentTheme = localStorage.getItem("theme");
 
 loadTasks();
 
+themeToggleButton.addEventListener("click", function () {
+    this.classList.toggle("active");
+});
+
 taskForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
