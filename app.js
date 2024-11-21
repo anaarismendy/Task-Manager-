@@ -41,6 +41,7 @@ taskList.addEventListener("click", (event) => {
 function deleteTask(taskItem) {
     if (confirm("Estas segura de eliminar este item?")) {
         taskItem.remove();
+        updateLocalStorage();
     }
 }
 
