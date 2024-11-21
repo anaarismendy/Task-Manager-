@@ -1,6 +1,8 @@
 const taskForm = document.getElementById("task-form");
 const taskList = document.getElementById("task-list");
 
+loadTasks();
+
 taskForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -8,8 +10,9 @@ taskForm.addEventListener("submit", (event) => {
     const task = taskInput.value;
 
     if (task) {
-        taskList.append(createTaskElement(task))
-        taskInput.value = ''
+        taskList.append(createTaskElement(task));
+        storeTaskInLocalStorage(task);
+        taskInput.value = "";
     }
 });
 
@@ -30,7 +33,7 @@ function createButton(text, className) {
 taskList.addEventListener("click", (event) => {
     if (event.target.classList.contains("delete-btn")) {
         deleteTask(event.target.parentElement);
-    }else if (event.target.classList.contains("edit-btn")) {
+    } else if (event.target.classList.contains("edit-btn")) {
         editTask(event.target.parentElement);
     }
 });
@@ -41,10 +44,26 @@ function deleteTask(taskItem) {
     }
 }
 
-function editTask(taskItem){
+function editTask(taskItem) {
     const newTask = prompt("Edita la tarea", taskItem.firstChild.textContent);
 
-    if (newTask !== null){
+    if (newTask !== null) {
         taskItem.firstChild.textContent = newTask;
     }
+}
+
+function storeTaskInLocalStorage(task) {
+    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+    tasks.push(task);
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks(){
+    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+    tasks.forEach((task) => {
+            taskList.appendChild(createTaskElement(task));
+    });
 }
